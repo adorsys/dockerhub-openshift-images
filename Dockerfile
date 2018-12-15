@@ -16,6 +16,7 @@ COPY --from=RPM /root/rpmbuild/RPMS/x86_64/haproxy18*.rpm /tmp/
 
 USER 0
 
-RUN yum localinstall -y /tmp/haproxy18*.rpm && rm -f tmp/haproxy18*.rpm
+RUN yum localinstall -y /tmp/haproxy18*.rpm && rm -f tmp/haproxy18*.rpm \
+    && setcap 'cap_net_bind_service=ep' /usr/sbin/haproxy
 
 USER 1001
