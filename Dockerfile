@@ -2,7 +2,7 @@ ARG OKD_VERSION=v3.11.0
 
 FROM centos AS RPM
 
-ARG HAPROXY_VERSION=1.8.14-2
+ARG HAPROXY_VERSION=1.8.17-3
 
 RUN curl -sfLJO http://ftp.redhat.com/redhat/linux/enterprise/7Server/en/RHOSE/SRPMS/haproxy-${HAPROXY_VERSION}.el7.src.rpm
 
