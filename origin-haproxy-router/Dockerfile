@@ -18,11 +18,10 @@ FROM openshift/origin-haproxy-router:${OKD_VERSION} AS PATCH
 USER 0
 
 RUN yum install -y patch
-ADD haproxy-config.template.patch /tmp/haproxy-config.template.patch
+COPY patches /tmp/
 
 # https://github.com/openshift/origin/pull/19840
-RUN patch /var/lib/haproxy/conf/haproxy-config.template /tmp/haproxy-config.template.patch
-
+RUN for patch in /tmp/*.patch; do echo $patch; patch /var/lib/haproxy/conf/haproxy-config.template "${patch}"; done
 
 FROM openshift/origin-haproxy-router:${OKD_VERSION}
 
