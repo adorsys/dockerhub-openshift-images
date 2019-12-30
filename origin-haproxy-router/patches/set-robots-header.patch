@@ -4,7 +4,7 @@
      {{- end }}{{/* hsts header */}}
    {{- end }}{{/* is "edge" or "reencrypt" */}}
 
-+  http-response set-header X-Robots-Tag noindex, nofollow
++  http-response set-header X-Robots-Tag none
 +
    {{- range $serviceUnitName, $weight := $cfg.ServiceUnitNames }}
      {{- if ge $weight 0 }}{{/* weight=0 is reasonable to keep existing connections to backends with cookies as we can see the HTTP headers */}}
