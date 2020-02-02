@@ -1,5 +1,7 @@
+# This file is managed via github.com/adorsys-containers/config
+
+/.idea/
 *.iml
-/.idea
 
 origin-haproxy-router/contrib/haproxy-*
 origin-haproxy-router/contrib/*.template
