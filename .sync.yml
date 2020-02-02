@@ -7,3 +7,8 @@
     - DOCKER_IMAGE: adorsys/origin-haproxy-router
       TAG: latest
       DIR: origin-haproxy-router
+
+.gitignore:
+  paths:
+    - 'origin-haproxy-router/contrib/haproxy-*'
+    - 'origin-haproxy-router/contrib/*.template'
