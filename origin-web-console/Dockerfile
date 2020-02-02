@@ -2,7 +2,7 @@ ARG OKD_VERSION=v3.11.0
 
 FROM centos AS RPM
 
-ARG WEBCONSOLE_VERSION=3.11.141-1.git.1.54aa706
+ARG WEBCONSOLE_VERSION=3.11.161-1.git.1.809b03f
 
 RUN curl -sfLJO http://ftp.redhat.com/redhat/linux/enterprise/7Server/en/RHOSE/SRPMS/atomic-openshift-web-console-${WEBCONSOLE_VERSION}.el7.src.rpm
 

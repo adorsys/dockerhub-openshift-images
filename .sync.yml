@@ -1,0 +1,9 @@
+.github/workflows/ci.yaml:
+  schedule: false
+  env:
+    - DOCKER_IMAGE: adorsys/origin-web-console
+      TAG: latest
+      DIR: origin-web-console
+    - DOCKER_IMAGE: adorsys/origin-haproxy-router
+      TAG: latest
+      DIR: origin-haproxy-router
