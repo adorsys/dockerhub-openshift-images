@@ -25,6 +25,10 @@ jobs:
             DIR: 'origin-haproxy-router'
             DOCKER_IMAGE: 'adorsys/origin-haproxy-router'
             TAG: 'latest'
+          -
+            DIR: 'openshift-haproxy-logger'
+            DOCKER_IMAGE: 'adorsys/openshift-haproxy-logger'
+            TAG: 'latest'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
