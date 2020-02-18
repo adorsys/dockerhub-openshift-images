@@ -7,6 +7,9 @@
     - DOCKER_IMAGE: adorsys/origin-haproxy-router
       TAG: latest
       DIR: origin-haproxy-router
+    - DOCKER_IMAGE: adorsys/openshift-haproxy-logger
+      TAG: latest
+      DIR: openshift-haproxy-logger
 
 .gitignore:
   paths:
