@@ -28,7 +28,7 @@ COPY --from=RPM /root/rpmbuild/RPMS/x86_64/${RPM_NAME}-${RPM_VERSION}.el7.x86_64
 
 USER 0
 
-RUN yum remove ${RPM_NAME} -y \
+RUN yum remove origin-web-console -y \
     && yum localinstall -y /tmp/${RPM_NAME}-${RPM_VERSION}.el7.x86_64.rpm && rm -f /tmp/${RPM_NAME}-${RPM_VERSION}.el7.x86_64.rpm
 
 USER 1001
