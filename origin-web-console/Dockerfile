@@ -24,7 +24,7 @@ FROM openshift/${IMAGE_NAME}:${OKD_VERSION}
 ARG RPM_NAME
 ARG RPM_VERSION
 
-COPY --from=RPM /root/rpmbuild/RPMS/x86_64/${RPM_NAME}-${RPM_VERSION}.el7.x86_64 /tmp/
+COPY --from=RPM /root/rpmbuild/RPMS/x86_64/${RPM_NAME}-${RPM_VERSION}.el7.x86_64.rpm /tmp/
 
 USER 0
 
