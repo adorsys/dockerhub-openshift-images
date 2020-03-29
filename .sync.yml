@@ -1,15 +1,18 @@
 .github/workflows/ci.yaml:
   schedule: false
   env:
-    - DOCKER_IMAGE: adorsys/origin-web-console
-      TAG: latest
-      DIR: origin-web-console
-    - DOCKER_IMAGE: adorsys/origin-haproxy-router
-      TAG: latest
-      DIR: origin-haproxy-router
     - DOCKER_IMAGE: adorsys/openshift-haproxy-logger
       TAG: latest
       DIR: openshift-haproxy-logger
+    - DOCKER_IMAGE: adorsys/origin-haproxy-router
+      TAG: v3.11.0
+      DIR: origin-haproxy-router
+    - DOCKER_IMAGE: adorsys/origin-web-console
+      TAG: v3.11.0
+      DIR: origin-web-console
+    - DOCKER_IMAGE: adorsys/origin-docker-registry
+      TAG: v3.11.0
+      DIR: origin-docker-registry
 
 .gitignore:
   paths:

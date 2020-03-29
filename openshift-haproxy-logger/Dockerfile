@@ -1,14 +1,19 @@
-FROM centos:7
+FROM registry.access.redhat.com/ubi8/ubi:latest AS TZDATA
 
-STOPSIGNAL SIGKILL
+FROM registry.access.redhat.com/ubi8/ubi-minimal:latest
 
 EXPOSE 10514
 
-RUN yum -y install rsyslog && yum clean all && rm -rf /var/cache/yum \
-    && rm -rf /etc/rsyslog.d/*
+ENV TZ=Europe/Berlin \
+    LC_ALL=C.UTF-8
+
+COPY --from=TZDATA /usr/share/zoneinfo/UTC /usr/share/zoneinfo/UTC
+COPY --from=TZDATA /usr/share/zoneinfo/Europe/Berlin /usr/share/zoneinfo/Europe/Berlin
+
+RUN microdnf -y install rsyslog && microdnf clean all && rm -rf /etc/rsyslog.d/*
 
 COPY root /
 
 USER 1001
 
-ENTRYPOINT ["/usr/sbin/rsyslogd", "-n", "-i" , "/tmp/rsyslog.pid"]
+ENTRYPOINT ["/usr/sbin/rsyslogd"]
