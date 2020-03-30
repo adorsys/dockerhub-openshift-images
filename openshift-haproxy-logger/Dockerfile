@@ -16,4 +16,4 @@ COPY root /
 
 USER 1001
 
-ENTRYPOINT ["/usr/sbin/rsyslogd"]
+ENTRYPOINT ["/usr/sbin/rsyslogd", "-n"]
