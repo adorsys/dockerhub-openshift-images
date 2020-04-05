@@ -3,5 +3,7 @@
 /.idea/
 *.iml
 
+/test-applications/
+
 origin-haproxy-router/contrib/haproxy-*
 origin-haproxy-router/contrib/*.template
