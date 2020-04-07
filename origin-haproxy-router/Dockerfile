@@ -1,16 +1,30 @@
 ARG OKD_VERSION=v3.11.0
+ARG HAPROXY_RPM_VERSION=1.8.17
+ARG HAPROXY_RPM_RELEASE=3
+ARG HAPROXY_PATCH_VERSION=2.0.14
 
 FROM centos:7 AS RPM
 
-ARG HAPROXY_VERSION=1.8.17-3
+ARG HAPROXY_RPM_VERSION
+ARG HAPROXY_RPM_RELEASE
+ARG HAPROXY_PATCH_VERSION
 
-RUN curl -sfLJO http://ftp.redhat.com/redhat/linux/enterprise/7Server/en/RHOSE/SRPMS/haproxy-${HAPROXY_VERSION}.el7.src.rpm
+# RUN curl -sfLJO http://ftp.redhat.com/redhat/linux/enterprise/7Server/en/RHOSE/SRPMS/haproxy-${HAPROXY_RPM_VERSION}-${HAPROXY_RPM_RELEASE}.el7.src.rpm
+RUN curl -sfLJO https://cbs.centos.org/kojifiles/repos/paas7-openshift-multiarch-el7-build/latest/x86_64/toplink/packages/haproxy/${HAPROXY_RPM_VERSION}/${HAPROXY_RPM_RELEASE}.el7/src/haproxy-${HAPROXY_RPM_VERSION}-${HAPROXY_RPM_RELEASE}.el7.src.rpm
 
 RUN yum groupinstall -y 'Development Tools'
-RUN yum install -y rpm-build
+RUN yum install -y rpm-build rpmdevtools
 RUN yum-builddep -y haproxy-*.el7.src.rpm
+RUN rpm -i haproxy-*.el7.src.rpm
 
-RUN rpmbuild --rebuild haproxy-*.el7.src.rpm
+WORKDIR /root/rpmbuild/SPECS
+
+RUN sed -i "s/${HAPROXY_RPM_VERSION}/${HAPROXY_PATCH_VERSION}/g" haproxy.spec
+RUN sed -i 's/1.8\/src/2.0\/src/' haproxy.spec
+RUN sed -i 's/3%{?dist}/1%{?dist}/' haproxy.spec
+RUN sed -i 's/linux2628/linux-glibc/' haproxy.spec
+RUN spectool -g -R haproxy.spec
+RUN rpmbuild -ba haproxy.spec
 
 FROM openshift/origin-haproxy-router:${OKD_VERSION} AS PATCH
 
@@ -24,14 +38,14 @@ RUN for patch in /tmp/*.patch; do echo $patch; patch -u -l -f /var/lib/haproxy/c
 
 FROM openshift/origin-haproxy-router:${OKD_VERSION}
 
-ARG HAPROXY_VERSION=1.8.17-3
-
 COPY --from=RPM /root/rpmbuild/RPMS/x86_64/haproxy18*.rpm /tmp/
 COPY --from=PATCH /var/lib/haproxy/conf/haproxy-config.template /var/lib/haproxy/conf/haproxy-config.template
 
 USER 0
 
-RUN yum localinstall -y /tmp/haproxy18*.rpm && rm -f tmp/haproxy18*.rpm \
-    && setcap 'cap_net_bind_service=ep' /usr/sbin/haproxy
+RUN yum update -y \
+    && yum localinstall -y /tmp/haproxy18*.rpm && rm -f tmp/haproxy18*.rpm \
+    && setcap 'cap_net_bind_service=ep' /usr/sbin/haproxy \
+    && /usr/sbin/haproxy -vv
 
 USER 1001
