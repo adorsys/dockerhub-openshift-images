@@ -41,7 +41,9 @@ RUN for patch in /tmp/*.patch; do echo $patch; patch -u -l -f /var/lib/haproxy/c
 FROM openshift/origin-haproxy-router:${OKD_VERSION}
 
 COPY --from=RPM /root/rpmbuild/RPMS/x86_64/haproxy18*.rpm /tmp/
-COPY --from=PATCH /var/lib/haproxy/conf/haproxy-config.template /var/lib/haproxy/conf/haproxy-config.template
+
+# ENV TEMPLATE_FILE=/var/lib/haproxy/conf/haproxy-config-adorsys.template
+COPY --from=PATCH /var/lib/haproxy/conf/haproxy-config.template /var/lib/haproxy/conf/haproxy-config-adorsys.template
 
 USER 0
 
