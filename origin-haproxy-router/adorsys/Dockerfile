@@ -1,30 +1,38 @@
 ARG OKD_VERSION=v3.11.0
 ARG HAPROXY_RPM_VERSION=1.8.23
 ARG HAPROXY_RPM_RELEASE=3
-#ARG HAPROXY_PATCH_VERSION=1.8.23
+ARG HAPROXY_PATCH_VERSION=2.0.14
 
 FROM centos:7 AS RPM
 
 ARG HAPROXY_RPM_VERSION
 ARG HAPROXY_RPM_RELEASE
-#ARG HAPROXY_PATCH_VERSION
+ARG HAPROXY_PATCH_VERSION
 
 RUN curl -sfLJO https://ftp.redhat.com/redhat/linux/enterprise/7Server/en/RHOSE/SRPMS/haproxy-${HAPROXY_RPM_VERSION}-${HAPROXY_RPM_RELEASE}.el7.src.rpm
 # RUN curl -sfLJO https://cbs.centos.org/kojifiles/repos/paas7-openshift-multiarch-el7-build/latest/x86_64/toplink/packages/haproxy/${HAPROXY_RPM_VERSION}/${HAPROXY_RPM_RELEASE}.el7/src/haproxy-${HAPROXY_RPM_VERSION}-${HAPROXY_RPM_RELEASE}.el7.src.rpm
 
 RUN yum groupinstall -y 'Development Tools'
 RUN yum install -y rpm-build rpmdevtools
+RUN yum install -y epel-release
 RUN yum-builddep -y haproxy-*.el7.src.rpm
 RUN rpm -i haproxy-*.el7.src.rpm
 
 WORKDIR /root/rpmbuild/SPECS
 
 # FOR haproxy 2.0 testing only
-#RUN sed -i "s/${HAPROXY_RPM_VERSION}/${HAPROXY_PATCH_VERSION}/g" haproxy.spec
-#RUN sed -i 's/1.8\/src/2.0\/src/' haproxy.spec
-#RUN sed -i 's/3%{?dist}/1%{?dist}/' haproxy.spec
-#RUN sed -i 's/linux2628/linux-glibc/' haproxy.spec
-#RUN spectool -g -R haproxy.spec
+RUN sed -i "s/${HAPROXY_RPM_VERSION}/${HAPROXY_PATCH_VERSION}/g" haproxy.spec
+RUN sed -i 's/1.8\/src/2.0\/src/' haproxy.spec
+RUN sed -i 's/real_name haproxy18/real_name haproxy20/' haproxy.spec
+RUN sed -i "s/${HAPROXY_RPM_RELEASE}%{?dist}/1%{?dist}/" haproxy.spec
+RUN sed -i 's/linux2628/linux-glibc/' haproxy.spec
+RUN sed -i '/Patch0/d' haproxy.spec
+RUN sed -i '/patch0/d' haproxy.spec
+
+# OpenSSL
+RUN sed -i 's/USE_OPENSSL=1/USE_OPENSSL=1 SSL_INC=\/usr\/include\/openssl11 SSL_LIB=\/usr\/lib64\/openssl11/' haproxy.spec
+
+RUN spectool -g -R haproxy.spec
 
 RUN rpmbuild -ba haproxy.spec
 
@@ -40,15 +48,16 @@ RUN for patch in /tmp/*.patch; do echo $patch; patch -u -l -f /var/lib/haproxy/c
 
 FROM openshift/origin-haproxy-router:${OKD_VERSION}
 
-COPY --from=RPM /root/rpmbuild/RPMS/x86_64/haproxy18*.rpm /tmp/
+COPY --from=RPM /root/rpmbuild/RPMS/x86_64/haproxy20*.rpm /tmp/
 
 # ENV TEMPLATE_FILE=/var/lib/haproxy/conf/haproxy-config-adorsys.template
 COPY --from=PATCH /var/lib/haproxy/conf/haproxy-config.template /var/lib/haproxy/conf/haproxy-config-adorsys.template
 
 USER 0
 
+RUN yum install -y epel-release && yum install -y openssl11
 RUN yum update -y \
-    && yum localinstall -y /tmp/haproxy18*.rpm && rm -f tmp/haproxy18*.rpm \
+    && yum localinstall -y /tmp/haproxy*.rpm && rm -f tmp/haproxy*.rpm \
     && setcap 'cap_net_bind_service=ep' /usr/sbin/haproxy
 
 USER 1001
