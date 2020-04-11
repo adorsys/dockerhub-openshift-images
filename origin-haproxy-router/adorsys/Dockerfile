@@ -13,8 +13,8 @@ RUN curl -sfLJO https://ftp.redhat.com/redhat/linux/enterprise/7Server/en/RHOSE/
 # RUN curl -sfLJO https://cbs.centos.org/kojifiles/repos/paas7-openshift-multiarch-el7-build/latest/x86_64/toplink/packages/haproxy/${HAPROXY_RPM_VERSION}/${HAPROXY_RPM_RELEASE}.el7/src/haproxy-${HAPROXY_RPM_VERSION}-${HAPROXY_RPM_RELEASE}.el7.src.rpm
 
 RUN yum groupinstall -y 'Development Tools'
-RUN yum install -y rpm-build rpmdevtools
 RUN yum install -y epel-release
+RUN yum install -y rpm-build rpmdevtools openssl11-devel
 RUN yum-builddep -y haproxy-*.el7.src.rpm
 RUN rpm -i haproxy-*.el7.src.rpm
 
@@ -29,7 +29,7 @@ RUN sed -i '/Patch0/d' haproxy.spec
 RUN sed -i '/patch0/d' haproxy.spec
 
 # OpenSSL
-RUN sed -i 's/USE_OPENSSL=1/USE_OPENSSL=1 SSL_INC=\/usr\/include\/openssl11 SSL_LIB=\/usr\/lib64\/openssl11/' haproxy.spec
+RUN sed -i 's/USE_OPENSSL=1/USE_OPENSSL=1 SSL_INC=\/usr\/include\/openssl11\/ SSL_LIB=\/usr\/lib64\/openssl11\//' haproxy.spec
 
 RUN spectool -g -R haproxy.spec
 
@@ -54,7 +54,7 @@ COPY --from=PATCH /var/lib/haproxy/conf/haproxy-config.template /var/lib/haproxy
 
 USER 0
 
-RUN yum install -y epel-release && yum install -y openssl11
+RUN yum install -y epel-release && yum install -y openssl11-libs
 RUN yum update -y \
     && yum localinstall -y /tmp/haproxy*.rpm && rm -f tmp/haproxy*.rpm \
     && setcap 'cap_net_bind_service=ep' /usr/sbin/haproxy

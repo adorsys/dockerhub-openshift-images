@@ -11,7 +11,7 @@ ARG RPM_VERSION
 
 USER 0
 
-RUN curl -sfLJO http://ftp.redhat.com/redhat/linux/enterprise/7Server/en/RHOSE/SRPMS/${RPM_NAME}-${RPM_VERSION}.el7.src.rpm
+RUN curl -sfLJO https://ftp.redhat.com/redhat/linux/enterprise/7Server/en/RHOSE/SRPMS/${RPM_NAME}-${RPM_VERSION}.el7.src.rpm
 
 RUN yum groupinstall -y 'Development Tools'
 RUN yum install -y rpm-build epel-release which yum-utils
