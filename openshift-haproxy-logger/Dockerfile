@@ -1,6 +1,6 @@
 FROM registry.access.redhat.com/ubi8/ubi:latest AS TZDATA
 
-FROM registry.access.redhat.com/ubi8/ubi-minimal:latest
+FROM registry.access.redhat.com/ubi8/ubi-minimal:8.1-407
 
 EXPOSE 10514
 
