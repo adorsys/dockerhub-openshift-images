@@ -23,5 +23,5 @@
 
 .gitignore:
   paths:
-    - 'origin-haproxy-router/contrib/haproxy-*'
-    - 'origin-haproxy-router/contrib/*.template'
+    - 'origin-haproxy-router/*/contrib/haproxy-*'
+    - 'origin-haproxy-router/*/contrib/*.template'
