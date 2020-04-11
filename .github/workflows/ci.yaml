@@ -23,9 +23,14 @@ jobs:
             TAG: 'latest'
           -
             ALIASES: 'latest'
-            DIR: 'origin-haproxy-router'
+            DIR: 'origin-haproxy-router/original'
             DOCKER_IMAGE: 'adorsys/origin-haproxy-router'
             TAG: 'v3.11.0'
+          -
+            ALIASES: 'latest'
+            DIR: 'origin-haproxy-router/adorsys'
+            DOCKER_IMAGE: 'adorsys/origin-haproxy-router'
+            TAG: 'v3.11.0-adorsys'
           -
             ALIASES: 'latest'
             DIR: 'origin-web-console'
