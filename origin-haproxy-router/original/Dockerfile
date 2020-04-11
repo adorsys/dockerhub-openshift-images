@@ -12,11 +12,7 @@ RUN curl -sfLJO https://ftp.redhat.com/redhat/linux/enterprise/7Server/en/RHOSE/
 RUN yum groupinstall -y 'Development Tools'
 RUN yum install -y rpm-build rpmdevtools
 RUN yum-builddep -y haproxy-*.el7.src.rpm
-RUN rpm -i haproxy-*.el7.src.rpm
-
-WORKDIR /root/rpmbuild/SPECS
-
-RUN rpmbuild -ba haproxy.spec
+RUN rpmbuild --rebuild haproxy-*.el7.src.rpm
 
 FROM openshift/origin-haproxy-router:${OKD_VERSION}
 

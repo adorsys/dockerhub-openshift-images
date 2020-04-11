@@ -54,8 +54,8 @@ COPY --from=PATCH /var/lib/haproxy/conf/haproxy-config.template /var/lib/haproxy
 
 USER 0
 
-RUN yum install -y epel-release && yum install -y openssl11-libs
 RUN yum update -y \
+    && yum install -y epel-release && yum install -y openssl11-libs \
     && yum localinstall -y /tmp/haproxy*.rpm && rm -f tmp/haproxy*.rpm \
     && setcap 'cap_net_bind_service=ep' /usr/sbin/haproxy
 
