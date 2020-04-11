@@ -27,7 +27,6 @@ jobs:
             DOCKER_IMAGE: 'adorsys/origin-haproxy-router'
             TAG: 'v3.11.0'
           -
-            ALIASES: 'latest'
             DIR: 'origin-haproxy-router/adorsys'
             DOCKER_IMAGE: 'adorsys/origin-haproxy-router'
             TAG: 'v3.11.0-adorsys'
@@ -141,7 +140,7 @@ jobs:
             done;
             (exit $s)
           fi
-      
+
       - name: Slack notification if pipeline failed
         uses: 8398a7/action-slack@v2
         with:
