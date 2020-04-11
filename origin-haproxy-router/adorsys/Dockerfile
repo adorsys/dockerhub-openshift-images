@@ -23,7 +23,6 @@ WORKDIR /root/rpmbuild/SPECS
 # FOR haproxy 2.0 testing only
 RUN sed -i "s/${HAPROXY_RPM_VERSION}/${HAPROXY_PATCH_VERSION}/g" haproxy.spec
 RUN sed -i 's/1.8\/src/2.0\/src/' haproxy.spec
-RUN sed -i 's/real_name haproxy18/real_name haproxy20/' haproxy.spec
 RUN sed -i "s/${HAPROXY_RPM_RELEASE}%{?dist}/1%{?dist}/" haproxy.spec
 RUN sed -i 's/linux2628/linux-glibc/' haproxy.spec
 RUN sed -i '/Patch0/d' haproxy.spec
@@ -48,7 +47,7 @@ RUN for patch in /tmp/*.patch; do echo $patch; patch -u -l -f /var/lib/haproxy/c
 
 FROM openshift/origin-haproxy-router:${OKD_VERSION}
 
-COPY --from=RPM /root/rpmbuild/RPMS/x86_64/haproxy20*.rpm /tmp/
+COPY --from=RPM /root/rpmbuild/RPMS/x86_64/haproxy18*.rpm /tmp/
 
 # ENV TEMPLATE_FILE=/var/lib/haproxy/conf/haproxy-config-adorsys.template
 COPY --from=PATCH /var/lib/haproxy/conf/haproxy-config.template /var/lib/haproxy/conf/haproxy-config-adorsys.template
