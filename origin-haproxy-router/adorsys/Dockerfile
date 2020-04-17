@@ -40,7 +40,7 @@ FROM openshift/origin-haproxy-router:${OKD_VERSION} AS PATCH
 USER 0
 
 RUN yum install -y patch
-COPY patches /tmp/
+COPY patches/*.patch /tmp/
 
 # https://github.com/openshift/origin/pull/19840
 RUN for patch in /tmp/*.patch; do echo $patch; patch -u -l -f /var/lib/haproxy/conf/haproxy-config.template "${patch}"; done
