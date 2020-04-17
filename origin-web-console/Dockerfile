@@ -2,7 +2,7 @@ ARG OKD_VERSION=v3.11.0
 
 ARG IMAGE_NAME=origin-web-console
 ARG RPM_NAME=atomic-openshift-web-console
-ARG RPM_VERSION=3.11.188-1.git.50.6c5dfa6
+ARG RPM_VERSION=3.11.200-1.git.50.a79175a
 
 FROM openshift/${IMAGE_NAME}:${OKD_VERSION} AS RPM
 
