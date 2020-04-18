@@ -1,0 +1,12 @@
+--- haproxy-config.template	2020-04-18 14:10:52.000000000 +0200
++++ haproxy-config.template.1	2020-04-18 14:13:21.000000000 +0200
+@@ -91,6 +91,9 @@
+   {{- end }}
+ {{- end }}
+ 
++  # docker-registry just reports "tls: internal error: failed to clone hash"
++  ssl-default-server-options ssl-max-ver TLSv1.2
++
+ defaults
+   maxconn {{env "ROUTER_MAX_CONNECTIONS" "20000"}}
+ 
