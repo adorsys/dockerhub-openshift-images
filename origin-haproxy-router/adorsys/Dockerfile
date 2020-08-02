@@ -1,7 +1,7 @@
 ARG OKD_VERSION=v3.11.0
 ARG HAPROXY_RPM_VERSION=1.8.23
 ARG HAPROXY_RPM_RELEASE=3
-ARG HAPROXY_PATCH_VERSION=2.1.7
+ARG HAPROXY_PATCH_VERSION=2.2.2
 
 FROM centos:7 AS RPM
 
@@ -22,7 +22,7 @@ WORKDIR /root/rpmbuild/SPECS
 
 # FOR haproxy 2.0 testing only
 RUN sed -i "s/${HAPROXY_RPM_VERSION}/${HAPROXY_PATCH_VERSION}/g" haproxy.spec
-RUN sed -i 's/1.8\/src/2.1\/src/' haproxy.spec
+RUN sed -i 's/1.8\/src/2.2\/src/' haproxy.spec
 RUN sed -i "s/${HAPROXY_RPM_RELEASE}%{?dist}/1%{?dist}/" haproxy.spec
 RUN sed -i 's/linux2628/linux-glibc/' haproxy.spec
 RUN sed -i '/Patch0/d' haproxy.spec
