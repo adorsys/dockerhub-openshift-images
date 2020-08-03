@@ -40,6 +40,11 @@ jobs:
             DIR: 'origin-docker-registry'
             DOCKER_IMAGE: 'adorsys/origin-docker-registry'
             TAG: 'v3.11.0'
+          -
+            ALIASES: 'latest'
+            DIR: 'origin-console'
+            DOCKER_IMAGE: 'adorsys/origin-console'
+            TAG: 'v3.11.0'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -143,7 +148,7 @@ jobs:
             done;
             (exit $s)
           fi
-      
+
       - name: Slack notification if pipeline failed
         uses: 8398a7/action-slack@v3
         with:

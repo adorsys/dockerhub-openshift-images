@@ -19,6 +19,10 @@
       TAG: v3.11.0
       ALIASES: 'latest'
       DIR: origin-docker-registry
+    - DOCKER_IMAGE: adorsys/origin-console
+      TAG: v3.11.0
+      ALIASES: 'latest'
+      DIR: origin-console
 
 .gitignore:
   paths:
