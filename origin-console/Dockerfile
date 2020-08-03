@@ -5,7 +5,7 @@ RUN git clone --single-branch --branch release-3.11 https://github.com/openshift
 WORKDIR /go/src/github.com/openshift/console/
 RUN ./build.sh
 
-FROM openshift/origin-base
+FROM openshift/origin-base:latest
 
 COPY --from=build /go/src/github.com/openshift/console/frontend/public/dist /opt/bridge/static
 COPY --from=build /go/src/github.com/openshift/console/bin/bridge /opt/bridge/bin/bridge
