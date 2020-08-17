@@ -45,6 +45,11 @@ jobs:
             DIR: 'origin-console'
             DOCKER_IMAGE: 'adorsys/origin-console'
             TAG: 'v3.11.0'
+          -
+            ALIASES: 'latest'
+            DIR: 'cluster-monitoring-operator'
+            DOCKER_IMAGE: 'adorsys/cluster-monitoring-operator'
+            TAG: 'v3.11.0'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2

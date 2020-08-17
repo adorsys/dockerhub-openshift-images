@@ -10,7 +10,6 @@ ARG HAPROXY_RPM_RELEASE
 ARG HAPROXY_PATCH_VERSION
 
 RUN curl -sfLJO https://ftp.redhat.com/redhat/linux/enterprise/7Server/en/RHOSE/SRPMS/haproxy-${HAPROXY_RPM_VERSION}-${HAPROXY_RPM_RELEASE}.el7.src.rpm
-# RUN curl -sfLJO https://cbs.centos.org/kojifiles/repos/paas7-openshift-multiarch-el7-build/latest/x86_64/toplink/packages/haproxy/${HAPROXY_RPM_VERSION}/${HAPROXY_RPM_RELEASE}.el7/src/haproxy-${HAPROXY_RPM_VERSION}-${HAPROXY_RPM_RELEASE}.el7.src.rpm
 
 RUN yum groupinstall -y 'Development Tools'
 RUN yum install -y epel-release

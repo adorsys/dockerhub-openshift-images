@@ -23,6 +23,10 @@
       TAG: v3.11.0
       ALIASES: 'latest'
       DIR: origin-console
+    - DOCKER_IMAGE: adorsys/cluster-monitoring-operator
+      TAG: v3.11.0
+      ALIASES: 'latest'
+      DIR: cluster-monitoring-operator
 
 .gitignore:
   paths:
