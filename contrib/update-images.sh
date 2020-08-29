@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -euo pipefail
+
 sedi() {
   if [ "$(uname)" == "Darwin" ]; then
     sed -i "" "$@"
