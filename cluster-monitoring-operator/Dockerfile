@@ -6,10 +6,9 @@ RUN make dependencies build
 
 FROM openshift/origin-base:v3.11
 
-ENV GOPATH /go
-ENV PATH="${PATH}:${GOPATH}/bin"
-RUN mkdir $GOPATH
+WORKDIR /go/src/github.com/openshift/cluster-monitoring-operator/
 
+COPY --from=builder /go/src/github.com/openshift/cluster-monitoring-operator/ /go/src/github.com/openshift/cluster-monitoring-operator/
 COPY --from=builder /go/src/github.com/openshift/cluster-monitoring-operator/operator /usr/bin/operator
 
 LABEL io.k8s.display-name="OpenShift cluster-monitoring-operator" \
