@@ -14,7 +14,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: ./contrib/update-images.sh
-      - name: Commit report
+      - name: Commit updates
         run: |
           if ! git diff --exit-code; then
             git config --global user.name 'adorsys GmbH & Co. KG'
