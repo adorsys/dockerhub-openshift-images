@@ -1,15 +1,19 @@
-FROM golang:1.10 AS builder
-WORKDIR /go/src/github.com/openshift/cluster-monitoring-operator/
+FROM centos:7
 
-RUN git clone --depth=1 --branch release-3.11 https://github.com/openshift/cluster-monitoring-operator.git .
-RUN make dependencies build
+ENV GOPATH /go
+ENV PATH="${PATH}:${GOPATH}/bin"
+RUN mkdir $GOPATH
 
-FROM openshift/origin-base:v3.11
+WORKDIR $GOPATH/src/github.com/openshift/cluster-monitoring-operator
 
-WORKDIR /go/src/github.com/openshift/cluster-monitoring-operator/
+RUN curl -sSfL https://github.com/openshift/cluster-monitoring-operator/archive/release-3.11.tar.gz \
+    | tar xz -C $GOPATH/src/github.com/openshift/cluster-monitoring-operator --strip-components 1
 
-COPY --from=builder /go/src/github.com/openshift/cluster-monitoring-operator/ /go/src/github.com/openshift/cluster-monitoring-operator/
-COPY --from=builder /go/src/github.com/openshift/cluster-monitoring-operator/operator /usr/bin/operator
+RUN yum install -y epel-release && \
+    yum install -y golang make git && \
+    cd $GOPATH/src/github.com/openshift/cluster-monitoring-operator && \
+    make operator-no-deps && cp $GOPATH/src/github.com/openshift/cluster-monitoring-operator/operator /usr/bin/ && \
+    yum erase -y golang make git && yum clean all
 
 LABEL io.k8s.display-name="OpenShift cluster-monitoring-operator" \
       io.k8s.description="This is a component of OpenShift Container Platform and manages the lifecycle of the Prometheus based cluster monitoring stack." \
