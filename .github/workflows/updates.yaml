@@ -1,0 +1,24 @@
+---
+name: Search for updates
+
+on:
+  push:
+    branches:
+      - master
+  schedule:
+    - cron: '30 1 * * *'
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: ./contrib/update-images.sh
+      - name: Commit report
+        run: |
+          if ! git diff --exit-code; then
+            git config --global user.name 'adorsys GmbH & Co. KG'
+            git config --global user.email 'adorsysoss@users.noreply.github.com'
+            git commit -am "Update RPM versions "
+            git push
+          fi
