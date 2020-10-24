@@ -13,12 +13,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - run: ./contrib/update-images.sh
-      - name: Commit updates
+      - name: Configure git updates
         run: |
-          if ! git diff --exit-code; then
-            git config --global user.name 'adorsys GmbH & Co. KG'
-            git config --global user.email 'adorsysoss@users.noreply.github.com'
-            git commit -am "Update RPM versions "
-            git push
-          fi
+          git config --global user.name 'adorsys GmbH & Co. KG'
+          git config --global user.email 'adorsysoss@users.noreply.github.com'
+
+      - run: ./contrib/update-images.sh
+      - run: git push
