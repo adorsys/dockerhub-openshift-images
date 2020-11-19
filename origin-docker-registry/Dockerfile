@@ -2,7 +2,7 @@ ARG OKD_VERSION=v3.11.0
 
 ARG IMAGE_NAME=origin-docker-registry
 ARG RPM_NAME=atomic-openshift-dockerregistry
-ARG RPM_VERSION=3.11.317-1.git.1.bff0b7b
+ARG RPM_VERSION=3.11.318-1.git.1.6f69181
 
 FROM openshift/${IMAGE_NAME}:${OKD_VERSION} AS RPM
 
