@@ -1,5 +1,5 @@
 --- haproxy-config.template	2020-12-07 01:07:25.000000000 +0100
-+++ haproxy-config.template.1	2020-12-07 01:09:44.000000000 +0100
++++ haproxy-config.template.1	2020-12-07 01:25:52.000000000 +0100
 @@ -450,12 +450,10 @@
    http-request set-header X-Forwarded-Proto http if !{ ssl_fc }
    http-request set-header X-Forwarded-Proto https if { ssl_fc }
@@ -11,8 +11,8 @@
 -  {{- else }}
 -  http-request set-header Forwarded for=%[src];host=%[req.hdr(host)];proto=%[req.hdr(X-Forwarded-Proto)]
 -  {{- end }}
-+  http-request set-header Forwarded for=\"[%[src]]\";host=%[req.hdr(host)];proto=%[req.hdr(X-Forwarded-Proto)];proto-version=%[req.hdr(X-Forwarded-Proto-Version)] if { src : }
-+  http-request set-header Forwarded for=%[src];host=%[req.hdr(host)];proto=%[req.hdr(X-Forwarded-Proto)];proto-version=%[req.hdr(X-Forwarded-Proto-Version)] if !{ src : }
++  http-request set-header Forwarded for=\"[%[src]]\";host=%[req.hdr(host)];proto=%[req.hdr(X-Forwarded-Proto)];proto-version=%[req.hdr(X-Forwarded-Proto-Version)] if { src -m sub : }
++  http-request set-header Forwarded for=%[src];host=%[req.hdr(host)];proto=%[req.hdr(X-Forwarded-Proto)];proto-version=%[req.hdr(X-Forwarded-Proto-Version)] if !{ src -m sub : }
  
    {{- if not (isTrue (index $cfg.Annotations "haproxy.router.openshift.io/disable_cookies")) }}
    cookie {{firstMatch $cookieNamePattern (index $cfg.Annotations "router.openshift.io/cookie_name") (env "ROUTER_COOKIE_NAME" "") $cfg.RoutingKeyName}} insert indirect nocache httponly
