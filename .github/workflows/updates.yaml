@@ -19,4 +19,8 @@ jobs:
           git config --global user.email 'adorsysoss@users.noreply.github.com'
 
       - run: ./contrib/update-images.sh
-      - run: git push
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GH_PAT }}
+          branch: ${{ github.ref }}
