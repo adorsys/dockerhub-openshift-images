@@ -1,0 +1,13 @@
+--- haproxy-config.template.1	2021-07-06 00:48:42.000000000 +0200
++++ haproxy-config.template	2021-07-06 00:49:13.000000000 +0200
+@@ -452,8 +452,8 @@
+   http-request set-header X-Forwarded-Proto-Version h2 if { ssl_fc_alpn -i h2 }
+ 
+   # See the quoting rules in https://tools.ietf.org/html/rfc7239 for IPv6 addresses (v4 addresses get translated to v6 when in hybrid mode)
+-  http-request set-header Forwarded for=\"[%[src]]\";host=%[req.hdr(host)];proto=%[req.hdr(X-Forwarded-Proto)];proto-version=%[req.hdr(X-Forwarded-Proto-Version)] if { src -m sub : }
+-  http-request set-header Forwarded for=%[src];host=%[req.hdr(host)];proto=%[req.hdr(X-Forwarded-Proto)];proto-version=%[req.hdr(X-Forwarded-Proto-Version)] if !{ src -m sub : }
++  http-request set-header Forwarded for=\"[%[src]]\";host=%[req.hdr(host)];proto=%[req.hdr(X-Forwarded-Proto)] if { src -m sub : }
++  http-request set-header Forwarded for=%[src];host=%[req.hdr(host)];proto=%[req.hdr(X-Forwarded-Proto)] if !{ src -m sub : }
+ 
+   {{- if not (isTrue (index $cfg.Annotations "haproxy.router.openshift.io/disable_cookies")) }}
+   cookie {{firstMatch $cookieNamePattern (index $cfg.Annotations "router.openshift.io/cookie_name") (env "ROUTER_COOKIE_NAME" "") $cfg.RoutingKeyName}} insert indirect nocache httponly
